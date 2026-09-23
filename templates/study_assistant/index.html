@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personalized Study Assistant</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc, #e0f2fe);
+            color: #1e293b;
+        }
+
+        /* Header */
+
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .logo h2 {
+            font-size: 21px;
+            color: #1e293b;
+        }
+
+        .logo span {
+            color: #6366f1;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        /* Main */
+
+        .container {
+            width: 86%;
+            max-width: 1200px;
+            margin: 45px auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .hero h1 span {
+            color: #6366f1;
+        }
+
+        .hero p {
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        /* Grid */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.07);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        .card-header h3 {
+            font-size: 19px;
+            color: #0f172a;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        /* Upload */
+
+        .upload-box {
+            border: 2px dashed #c7d2fe;
+            border-radius: 16px;
+            padding: 35px 20px;
+            text-align: center;
+            background: #f8faff;
+            transition: 0.3s;
+        }
+
+        .upload-box:hover {
+            border-color: #6366f1;
+            background: #f5f3ff;
+        }
+
+        .upload-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .upload-box h4 {
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .upload-box p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .btn {
+            border: none;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 17px;
+            transition: 0.25s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* File */
+
+        .file-box {
+            margin-top: 20px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 13px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        /* Summary */
+
+        .summary-card {
+            grid-column: 1 / -1;
+        }
+
+        .summary-content {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 22px;
+            line-height: 1.8;
+            color: #475569;
+            white-space: pre-line;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        /* Question */
+
+        .question-card {
+            grid-column: 1 / -1;
+        }
+
+        .question-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        .question-input {
+            flex: 1;
+            border: 1px solid #cbd5e1;
+            border-radius: 11px;
+            padding: 14px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .question-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px #eef2ff;
+        }
+
+        .ask-btn {
+            margin-top: 0;
+            padding: 0 28px;
+        }
+
+        /* Answer */
+
+        .answer-box {
+            margin-top: 22px;
+            background: #eef2ff;
+            border-left: 4px solid #6366f1;
+            border-radius: 10px;
+            padding: 20px;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .empty {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        /* Footer */
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card,
+            .question-card {
+                grid-column: auto;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .question-form {
+                flex-direction: column;
+            }
+
+            .ask-btn {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 15px 5%;
+            }
+
+            .status {
+                display: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <header class="header">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                AI
+            </div>
+
+            <h2>
+                Personalized <span>Study Assistant</span>
+            </h2>
+
+        </div>
+
+        <div class="status">
+
+            <div class="status-dot"></div>
+
+            AI Assistant Online
+
+        </div>
+
+    </header>
+
+
+    <!-- Main -->
+
+    <main class="container">
+
+        <!-- Hero -->
+
+        <section class="hero">
+
+            <h1>
+                Study Smarter with <span>AI</span>
+            </h1>
+
+            <p>
+                Upload your study material and let AI summarize,
+                understand and answer your questions.
+            </p>
+
+        </section>
+
+
+        <div class="grid">
+
+
+            <!-- Upload Card -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        📚
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Upload Study Material
+                        </h3>
+
+                        <p>
+                            PDF or Microsoft Word document
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form method="POST"
+                      enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <div class="upload-box">
+
+                        <div class="upload-icon">
+                            📄
+                        </div>
+
+                        <h4>
+                            Choose your document
+                        </h4>
+
+                        <p>
+                            Supported formats: PDF, DOCX
+                        </p>
+
+                        <input type="file"
+                               name="document"
+                               accept=".pdf,.docx"
+                               required>
+
+                        <br>
+
+                        <button class="btn"
+                                type="submit">
+
+                            ✨ Generate Summary
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                {% if uploaded_file %}
+
+                <div class="file-box">
+
+                    📎
+
+                    <strong>
+                        {{ uploaded_file }}
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Features Card -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        🤖
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            AI Study Features
+                        </h3>
+
+                        <p>
+                            Learn faster with intelligent tools
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div style="line-height: 2.4; color:#475569;">
+
+                    <div>
+                        🧠 &nbsp; Intelligent document understanding
+                    </div>
+
+                    <div>
+                        📑 &nbsp; Automatic study material summary
+                    </div>
+
+                    <div>
+                        🔍 &nbsp; Context-aware question answering
+                    </div>
+
+                    <div>
+                        ⚡ &nbsp; Fast AI-powered responses
+                    </div>
+
+                    <div>
+                        🎯 &nbsp; Personalized learning assistance
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Summary -->
+
+            <div class="card summary-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        📝
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            AI Generated Summary
+                        </h3>
+
+                        <p>
+                            Key information extracted from your document
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if summary %}
+
+                <div class="summary-content">
+
+                    {{ summary }}
+
+                </div>
+
+                {% else %}
+
+                <div class="summary-content empty">
+
+                    Upload a PDF or Word document to generate
+                    an AI-powered summary.
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Question -->
+
+            <div class="card question-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        💬
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Ask Your Study Assistant
+                        </h3>
+
+                        <p>
+                            Ask questions based on your uploaded material
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form method="POST"
+                      class="question-form">
+
+                    {% csrf_token %}
+
+                    <input class="question-input"
+                           type="text"
+                           name="question"
+                           placeholder="Example: Explain the main concepts in this document..."
+                           required>
+
+                    <button class="btn ask-btn"
+                            type="submit">
+
+                        Ask AI 🚀
+
+                    </button>
+
+                </form>
+
+
+                <div class="answer-box">
+
+                    <strong>
+                        🤖 AI Answer
+                    </strong>
+
+                    <br><br>
+
+                    {% if answer %}
+
+                        {{ answer }}
+
+                    {% else %}
+
+                        <span class="empty">
+                            Your answer will appear here after
+                            asking a question.
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        Personalized Study Assistant • Powered by Generative AI
+
+    </footer>
+
+
+</body>
+
+</html>
